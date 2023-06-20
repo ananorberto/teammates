@@ -348,6 +348,116 @@ public class FeedbackResponsesLogicTest extends BaseLogicTest {
             }
         }
     }
+    
+    @Test //CT1
+    public void isResponseOfFeedbackQuestionVisibleToStudents() {
+            FeedbackQuestionAttributes.Builder builder = FeedbackQuestionAttributes.builder();
+            FeedbackQuestionAttributes feedback = builder.build();
+            List<FeedbackParticipantType> list = new ArrayList<FeedbackParticipantType>();
+
+            list.add(FeedbackParticipantType.STUDENTS);
+            feedback.setShowResponsesTo(list);
+            FeedbackResponsesLogic instance = FeedbackResponsesLogic.inst();
+
+            assertTrue(instance.isResponseOfFeedbackQuestionVisibleToStudent(feedback));
+    }
+
+    @Test // CT2
+    public void testIfFunctionOfIsResponseOfFeedbackQuestionVisibleToStudentParticipantTypeTeamsMembers() {
+            FeedbackQuestionAttributes.Builder builder = FeedbackQuestionAttributes.builder();
+            FeedbackQuestionAttributes feedback = builder.build();
+            List<FeedbackParticipantType> list = new ArrayList<FeedbackParticipantType>();
+
+            list.add(FeedbackParticipantType.RECEIVER);
+            feedback.setShowResponsesTo(list);
+            feedback.setRecipientType(FeedbackParticipantType.TEAMS);
+            feedback.setGiverType(FeedbackParticipantType.NONE);
+
+            FeedbackResponsesLogic instance = FeedbackResponsesLogic.inst();
+
+            assertTrue(instance.isResponseOfFeedbackQuestionVisibleToStudent(feedback));
+    }
+
+    @Test // CT3
+    public void testIfFunctionOfIsResponseOfFeedbackQuestionVisibleToStudentParticipantTypeIsStudent() {
+            FeedbackQuestionAttributes.Builder builder = FeedbackQuestionAttributes.builder();
+            FeedbackQuestionAttributes feedback = builder.build();
+            List<FeedbackParticipantType> list = new ArrayList<FeedbackParticipantType>();
+
+            list.add(FeedbackParticipantType.RECEIVER);
+            feedback.setShowResponsesTo(list);
+            feedback.setRecipientType(FeedbackParticipantType.STUDENTS);
+            feedback.setGiverType(FeedbackParticipantType.STUDENTS);
+
+            FeedbackResponsesLogic instance = FeedbackResponsesLogic.inst();
+
+            assertTrue(instance.isResponseOfFeedbackQuestionVisibleToStudent(feedback));
+    }
+
+    @Test // CT4
+    public void testIfFunctionOfIsResponseOfFeedbackQuestionVisibleToStudentParticipantRecipientIsTeamAndGiverIsStudents() {
+            FeedbackQuestionAttributes.Builder builder = FeedbackQuestionAttributes.builder();
+            FeedbackQuestionAttributes feedback = builder.build();
+            List<FeedbackParticipantType> list = new ArrayList<FeedbackParticipantType>();
+
+            list.add(FeedbackParticipantType.RECEIVER);
+            feedback.setShowResponsesTo(list);
+            feedback.setRecipientType(FeedbackParticipantType.TEAMS);
+            feedback.setGiverType(FeedbackParticipantType.STUDENTS);
+
+            FeedbackResponsesLogic instance = FeedbackResponsesLogic.inst();
+
+            assertTrue(instance.isResponseOfFeedbackQuestionVisibleToStudent(feedback));
+    }
+
+
+    @Test // CT5
+    public void testIfFunctionOfIsResponseOfFeedbackQuestionVisibleToStudentParticipantRecipientIsStudentAndGiverIsTeam() {
+            FeedbackQuestionAttributes.Builder builder = FeedbackQuestionAttributes.builder();
+            FeedbackQuestionAttributes feedback = builder.build();
+            List<FeedbackParticipantType> list = new ArrayList<FeedbackParticipantType>();
+
+            list.add(FeedbackParticipantType.NONE);
+            feedback.setShowResponsesTo(list);
+            feedback.setRecipientType(FeedbackParticipantType.NONE);
+            feedback.setGiverType(FeedbackParticipantType.TEAMS);
+
+            FeedbackResponsesLogic instance = FeedbackResponsesLogic.inst();
+
+            assertTrue(instance.isResponseOfFeedbackQuestionVisibleToStudent(feedback));
+    }
+
+    @Test // CT6
+    public void testIfFunctionOfIsResponseOfFeedbackQuestionVisibleToOnwTeamRecipientTypeNoneGiverTypeTeams() {
+            FeedbackQuestionAttributes.Builder builder = FeedbackQuestionAttributes.builder();
+            FeedbackQuestionAttributes feedback = builder.build();
+            List<FeedbackParticipantType> list = new ArrayList<FeedbackParticipantType>();
+
+            list.add(FeedbackParticipantType.OWN_TEAM_MEMBERS);
+            feedback.setShowResponsesTo(list);
+            feedback.setRecipientType(FeedbackParticipantType.NONE);
+            feedback.setGiverType(FeedbackParticipantType.TEAMS);
+
+            FeedbackResponsesLogic instance = FeedbackResponsesLogic.inst();
+
+            assertTrue(instance.isResponseOfFeedbackQuestionVisibleToStudent(feedback));
+    }
+
+    @Test // CT7
+    public void testIfFunctionOfIsResponseOfFeedbackQuestionVisibleToOnwTeamRecipientTypeNoneGiverTypeInstructors() {
+            FeedbackQuestionAttributes.Builder builder = FeedbackQuestionAttributes.builder();
+            FeedbackQuestionAttributes feedback = builder.build();
+            List<FeedbackParticipantType> list = new ArrayList<FeedbackParticipantType>();
+
+            list.add(FeedbackParticipantType.OWN_TEAM_MEMBERS);
+            feedback.setShowResponsesTo(list);
+            feedback.setRecipientType(FeedbackParticipantType.NONE);
+            feedback.setGiverType(FeedbackParticipantType.INSTRUCTORS);
+
+            FeedbackResponsesLogic instance = FeedbackResponsesLogic.inst();
+
+            assertTrue(instance.isResponseOfFeedbackQuestionVisibleToStudent(feedback));
+    }
 
     private boolean areRankResponsesConsistent(List<FeedbackResponseAttributes> responses, int maxRank) {
         for (FeedbackResponseAttributes response : responses) {
